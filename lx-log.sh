@@ -7,7 +7,7 @@ $filepath = sprintf('%s/%s', $filedir, $filename);
 
 $aInput = $_SERVER['argv'];
 array_shift($aInput);
-$sInput = implode("\s", $aInput);
+$sInput = implode(" ", $aInput);
 $sEntry = sprintf("%s\t%s", date('Y-m-d H:i:s'), $sInput);
 $content = implode("\n", array(
 	file_get_contents($filepath)
