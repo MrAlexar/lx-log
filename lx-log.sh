@@ -2,15 +2,18 @@
 <?php
 
 $sInput = getInput();
+run($sInput);
 
-switch ($sInput) {
-	case '--help':
-		showHelp();
-		break;
-	default:
-		addLog($sInput);
-	case '':
-		showLast();
+function run($sInput) {
+	switch ($sInput) {
+		case '--help':
+			showHelp();
+			break;
+		default:
+			addLog($sInput);
+		case '':
+			showLast();
+	}
 }
 
 function getInput() {
