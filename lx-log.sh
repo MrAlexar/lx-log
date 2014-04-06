@@ -1,7 +1,6 @@
 #!/usr/bin/php
 <?php
 
-
 $sInput = getInput();
 
 switch ($sInput) {
@@ -21,7 +20,7 @@ function getInput() {
 }
 
 function addLog($sLog) {
-	$sEntry = sprintf("%s\t%s", date('Y-m-d H:i:s'), $sLog);
+	$sEntry = sprintf("%s\t%s", gmdate('D, d M Y H:i:s \G\M\T'), $sLog);
 	$filepath = getFilename();
 	$content = implode("\n", array(
 		file_get_contents($filepath)
