@@ -2,7 +2,8 @@
 <?php
 
 define('CMD_ADD', 'add');
-define('CMD_AMEND', 'amend');
+define('CMD_AMEND', 'amend'); // Not implemented. @see addLog()
+define('CMD_APPEND', 'append');
 define('CMD_HELP', 'help');
 
 $sInput = getInput();
@@ -16,6 +17,7 @@ function run($sInput) {
 			break;
 		case CMD_ADD:
 		case CMD_AMEND:
+		case CMD_APPEND:
 			if (!empty($sArg)) {
 				addLog($sArg, $sCommand);
 			} else {
@@ -53,9 +55,10 @@ function getInput() {
 }
 
 function addLog($sLog, $sCommand=null) {
+	// @TODO: implement CMD_AMEND
 	$sEntry = sprintf("%s\t%s", gmdate('D, d M Y H:i:s \G\M\T'), $sLog);
 	$filepath = getFilename();
-	$separator = ($sCommand == CMD_AMEND) ? ' ' : "\n";
+	$separator = ($sCommand == CMD_APPEND) ? ' ' : "\n";
 	$content = implode($separator, array(
 		file_get_contents($filepath)
 		, $sEntry
