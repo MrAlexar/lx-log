@@ -1,19 +1,49 @@
 #!/usr/bin/php
 <?php
 
+define('CMD_ADD', 'add');
+define('CMD_AMEND', 'amend');
+define('CMD_HELP', 'help');
+
 $sInput = getInput();
 run($sInput);
 
 function run($sInput) {
-	switch ($sInput) {
-		case '--help':
+	list($sCommand, $sArg) = _parse($sInput);
+	switch ($sCommand) {
+		case CMD_HELP:
 			showHelp();
 			break;
+		case CMD_ADD:
+		case CMD_AMEND:
+			if (!empty($sArg)) {
+				addLog($sArg, $sCommand);
+			} else {
+				showLast();
+			}
+			break;
+		case 'debug':
 		default:
-			addLog($sInput);
+			writeOutput('[DEBUG]' . json_encode((object)array('command' => $sCommand, 'arg' => $sArg)));
+			break;
 		case '':
-			showLast();
 	}
+}
+
+function _parse($sInput) {
+	preg_match_all("/[^\s]*/", $sInput, $aM);
+	$aM = array_filter($aM);
+	$sCommand = CMD_ADD;
+	$sArg = '';
+	if (!empty($aM[0][0])) {
+		$args = $aM[0];
+		$first_arg = $args[0];
+		if (0 === strpos($first_arg, '--')) {
+			$sCommand = substr(array_shift($args), 2);
+		}
+		$sArg = implode(' ', $args);
+	}
+	return array($sCommand, trim($sArg));
 }
 
 function getInput() {
@@ -22,10 +52,11 @@ function getInput() {
 	return implode(" ", $aInput);
 }
 
-function addLog($sLog) {
+function addLog($sLog, $sCommand=null) {
 	$sEntry = sprintf("%s\t%s", gmdate('D, d M Y H:i:s \G\M\T'), $sLog);
 	$filepath = getFilename();
-	$content = implode("\n", array(
+	$separator = ($sCommand == CMD_AMEND) ? ' ' : "\n";
+	$content = implode($separator, array(
 		file_get_contents($filepath)
 		, $sEntry
 	));
@@ -52,4 +83,10 @@ function showLast() {
 	$sLast = reset(array_reverse($aLines));
 	writeOutput($sLast);
 }
+
+
+
+
+
+
 
