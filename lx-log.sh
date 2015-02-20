@@ -67,7 +67,7 @@ function addLog($sLog, $sCommand=null) {
 }
 
 function showHelp() {
-	writeOutput('lx-log [any [combination [of [words [...]]]]]');
+	writeOutput('lx-log [--append|--help|--debug] [any [combination [of [words [...]]]]]');
 }
 
 function writeOutput($sText) {
