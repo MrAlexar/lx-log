@@ -5,6 +5,7 @@ define('CMD_ADD', 'add');
 define('CMD_AMEND', 'amend'); // Not implemented. @see addLog()
 define('CMD_APPEND', 'append');
 define('CMD_HELP', 'help');
+define('CMD_FILTER', 'filter');
 
 $sInput = getInput();
 run($sInput);
@@ -24,6 +25,8 @@ function run($sInput) {
 				showLast();
 			}
 			break;
+		case CMD_FILTER:
+			filterLog($sArg);
 		case 'debug':
 		default:
 			writeOutput('[DEBUG]' . json_encode((object)array('command' => $sCommand, 'arg' => $sArg)));
@@ -86,7 +89,17 @@ function showLast() {
 	$sLast = reset(array_reverse($aLines));
 	writeOutput($sLast);
 }
-
+function filterLog($sText) {
+	$preg = sprintf('/%s/', $sText);
+	$aLines = explode("\n", file_get_contents(getFilename()));
+	$aOutput = array();
+	foreach ($aLines as $sLine) {
+		if (preg_match($preg, $sLine)) {
+			$aOutput[] = $sLine;
+		}
+	}
+	writeOutput(implode("\n", $aOutput));
+}
 
 
 
