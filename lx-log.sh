@@ -95,6 +95,7 @@ function filterLog($sText) {
 	$aOutput = array();
 	foreach ($aLines as $sLine) {
 		if (preg_match($preg, $sLine)) {
+			// @TODO: Highlight the searched text
 			$aOutput[] = $sLine;
 		}
 	}
