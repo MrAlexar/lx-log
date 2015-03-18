@@ -59,6 +59,7 @@ function getInput() {
 
 function addLog($sLog, $sCommand=null) {
 	// @TODO: implement CMD_AMEND
+	_processLog($sLog, $sCommand);
 	$sEntry = sprintf("%s\t%s", gmdate('D, d M Y H:i:s \G\M\T'), $sLog);
 	$filepath = getFilename();
 	$separator = ($sCommand == CMD_APPEND) ? ' ' : "\n";
@@ -102,7 +103,22 @@ function filterLog($sText) {
 	writeOutput(implode("\n", $aOutput));
 }
 
+/**
+ * Processes a log; and does some actions and also changes to the actual log text before it is logged.
+ */
+function _processLog(&$sLog, $sCommand) {
+	try {
+		require_once 'task.inc';
+		$oProcessor = new LxLog_Processor_Task;
+		$oProcessor->process($sLog, $sCommand);
+	} catch (LxLog_Exception $e) {
+		$sLog .= sprintf(' (%s)', $e->getMessage());
+	}
+}
 
+interface LxLog_Processor {
+	public function process($sLog, $sCommand);
+}
 
 
 
