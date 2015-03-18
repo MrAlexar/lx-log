@@ -59,6 +59,7 @@ function getInput() {
 
 function addLog($sLog, $sCommand=null) {
 	// @TODO: implement CMD_AMEND
+	_processLog($sLog, $sCommand);
 	$sEntry = sprintf("%s\t%s", gmdate('D, d M Y H:i:s \G\M\T'), $sLog);
 	$filepath = getFilename();
 	$separator = ($sCommand == CMD_APPEND) ? ' ' : "\n";
@@ -103,7 +104,19 @@ function filterLog($sText) {
 }
 
 
+/**
+ * Processes a log; and does some actions and also changes to the actual log text before it is logged.
+ */
+function _processLog(&$sLog, $sCommand) {
+	_processLog_task($sLog);
+}
 
-
+/**
+ * Task integration: Looks for keywords and if any creats a task out of the log
+ * and sets appropriate tags to the task
+ */
+function _processLog_task(&$sLog) {
+	// @FIXME implement
+}
 
 
