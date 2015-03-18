@@ -103,20 +103,23 @@ function filterLog($sText) {
 	writeOutput(implode("\n", $aOutput));
 }
 
-
 /**
  * Processes a log; and does some actions and also changes to the actual log text before it is logged.
  */
 function _processLog(&$sLog, $sCommand) {
-	_processLog_task($sLog);
+	try {
+		require_once 'task.inc';
+		$oProcessor = new LxLog_Processor_Task;
+		$oProcessor->process($sLog, $sCommand);
+	} catch (LxLog_Exception $e) {
+		$sLog .= sprintf(' (%s)', $e->getMessage());
+	}
 }
 
-/**
- * Task integration: Looks for keywords and if any creats a task out of the log
- * and sets appropriate tags to the task
- */
-function _processLog_task(&$sLog) {
-	// @FIXME implement
+interface LxLog_Processor {
+	public function process($sLog, $sCommand);
 }
+
+
 
 
