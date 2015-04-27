@@ -7,6 +7,7 @@ define('CMD_APPEND', 'append');
 define('CMD_HELP', 'help');
 define('CMD_FILTER', 'filter');
 
+prepareEnv();
 $sInput = getInput();
 run($sInput);
 
@@ -50,7 +51,16 @@ function _parse($sInput) {
 	}
 	return array($sCommand, trim($sArg));
 }
-
+function prepareEnv() {
+	define('APP_DATA', $_SERVER['HOME'] . '/.lx-log');
+	if (!file_exists(APP_DATA)) {
+		mkdir(APP_DATA);
+	}
+	$filename = getFilename();
+	if (!file_exists($filename)) {
+		touch($filename);
+	}
+}
 function getInput() {
 	$aInput = $_SERVER['argv'];
 	array_shift($aInput);
@@ -80,9 +90,8 @@ function writeOutput($sText) {
 }
 
 function getFilename() {
-	$filename = 'DailyLog.txt';
-	$filedir = '/Users/alexarpen/Documents';
-	return sprintf('%s/%s', $filedir, $filename);	
+	$filename = 'lx-log-main.txt';
+	return sprintf('%s/%s', APP_DATA, $filename);
 }
 
 function showLast() {
