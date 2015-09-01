@@ -3,4 +3,5 @@ until false;
 	do 
 		read -s cmd;
 		lx-log $cmd;
+		echo "Logged " ${#cmd} " character(s).";
 done
