@@ -1,12 +1,31 @@
 echo "Start logging. Press Ctrl+C to stop...";
+
+echo=false
+
+[ -n "$1" ] && command=$1
+
+if [ "$command" = "echo" ]
+  then
+  echo=true
+fi
+
 until false;
 	do 
-		read -s cmd;
+		if $echo
+		  then
+		  echo -e "> \c"; read cmd;
+		else
+		  read -s cmd;
+		fi
 		len=${#cmd};
+		message=""
 		if [ $len != 0 ]; then
 			lx-log $cmd;
-			echo "Logged " ${#cmd} " character(s).";
+			message="[Logged "${#cmd}" character(s).]";
 		else
-			echo "Null";
+			message="[Null]";
+		fi
+		if [ "$echo" != true ]; then
+			echo $message
 		fi
 done
