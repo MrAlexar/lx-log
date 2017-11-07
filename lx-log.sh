@@ -119,7 +119,10 @@ function _processLog(&$sLog, $sCommand) {
 	try {
 		require_once 'task.inc';
 		$oProcessor = new LxLog_Processor_Task;
-		$oProcessor->process($sLog, $sCommand);
+		if ($oProcessor->isAvailable()) {
+			$oProcessor->process($sLog, $sCommand);
+		}
+		// @TODO Do we want to force using task? It will be skipped if it does not exist at the moment.
 	} catch (LxLog_Exception $e) {
 		$sLog .= sprintf(' (%s)', $e->getMessage());
 	}

@@ -6,6 +6,11 @@ class LxLog_Processor_Task implements LxLog_Processor {
 
 	}
 
+	public function isAvailable() {
+		$bin = $this->_getBin();
+		return !empty($bin);
+	}
+
 	public function process($sLog, $sCommand) {
 		$this->_explodeTag($sLog, $tag, $task);
 		if (empty($tag)) {
