@@ -9,8 +9,11 @@ if [ "$command" = "echo" ]
   echo=true
 fi
 
+cmd=""
+prev_cmd=""
 until false;
 	do 
+		prev_cmd="$cmd"
 		if $echo
 		  then
 		  echo -e "> \c"; read cmd;
@@ -20,6 +23,11 @@ until false;
 		len=${#cmd};
 		message=""
 		if [ $len != 0 ]; then
+			case "$cmd" in
+				"echo") echo $prev_cmd;;
+				"exit") echo "Done."; exit;;
+				*);;
+			esac
 			lx-log $cmd;
 			message="[Logged "${#cmd}" character(s).]";
 		else
