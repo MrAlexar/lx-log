@@ -13,27 +13,29 @@ cmd=""
 prev_cmd=""
 until false;
 	do 
-		prev_cmd="$cmd"
 		if $echo
 		  then
 		  echo -e "> \c"; read cmd;
 		else
 		  read -s cmd;
 		fi
-		len=${#cmd};
-		message=""
-		if [ $len != 0 ]; then
 			case "$cmd" in
-				"echo") echo $prev_cmd;;
+				"echo")
+				echo $prev_cmd;
+				echo "> echo";
+				;;
+				"clear")
+				clear;
+				;;
 				"exit") echo "Done."; exit;;
-				*);;
+				"")
+				echo "[Null]";
+				;;
+				*)
+				prev_cmd="$cmd"
+				lx-log $cmd;
+			len=${#cmd};
+				echo "[Logged "${#cmd}" character(s).]";
+				;;
 			esac
-			lx-log $cmd;
-			message="[Logged "${#cmd}" character(s).]";
-		else
-			message="[Null]";
-		fi
-		if [ "$echo" != true ]; then
-			echo $message
-		fi
 done
