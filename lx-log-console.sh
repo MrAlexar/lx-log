@@ -24,6 +24,9 @@ until false;
 				echo $prev_cmd;
 				echo "> echo";
 				;;
+				"list")
+				less +G $(lx-log --datafile);
+				;;
 				"clear")
 				clear;
 				;;

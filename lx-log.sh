@@ -6,6 +6,7 @@ define('CMD_AMEND', 'amend'); // Not implemented. @see addLog()
 define('CMD_APPEND', 'append');
 define('CMD_HELP', 'help');
 define('CMD_FILTER', 'filter');
+define('CMD_DATAFILE', 'datafile');
 
 prepareEnv();
 $sInput = getInput();
@@ -25,6 +26,9 @@ function run($sInput) {
 			} else {
 				showLast();
 			}
+			break;
+		case CMD_DATAFILE:
+			writeOutput(getFilename());
 			break;
 		case CMD_FILTER:
 			filterLog($sArg);
@@ -81,7 +85,7 @@ function addLog($sLog, $sCommand=null) {
 }
 
 function showHelp() {
-	writeOutput('lx-log [--append|--help|--debug] [any [combination [of [words [...]]]]]');
+	writeOutput('lx-log [--append|--help|--debug|--datafile] [any [combination [of [words [...]]]]]');
 }
 
 function writeOutput($sText) {
