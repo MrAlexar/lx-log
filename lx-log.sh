@@ -100,7 +100,8 @@ function getFilename() {
 
 function showLast() {
 	$aLines = explode("\n", file_get_contents(getFilename()));
-	$sLast = reset(array_reverse($aLines));
+	$aLines = array_reverse($aLines);
+	$sLast = reset($aLines);
 	writeOutput($sLast);
 }
 function filterLog($sText) {
