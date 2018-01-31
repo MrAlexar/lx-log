@@ -74,7 +74,7 @@ function getInput() {
 function addLog($sLog, $sCommand=null) {
 	// @TODO: implement CMD_AMEND
 	_processLog($sLog, $sCommand);
-	$sEntry = sprintf("%s\t%s", gmdate('D, d M Y H:i:s \G\M\T'), $sLog);
+	$sEntry = sprintf("%s\t%s", date('D, d M Y H:i:s T (e)'), $sLog);
 	$filepath = getFilename();
 	$separator = ($sCommand == CMD_APPEND) ? ' ' : "\n";
 	$content = implode($separator, array(
