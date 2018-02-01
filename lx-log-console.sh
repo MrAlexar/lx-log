@@ -30,6 +30,9 @@ until false;
 				"clear")
 				clear;
 				;;
+				"date")
+				lx-log --date;
+				;;
 				"exit") echo "Done."; exit;;
 				"")
 				echo "[Null]";

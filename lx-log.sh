@@ -6,6 +6,7 @@ define('CMD_AMEND', 'amend'); // Not implemented. @see addLog()
 define('CMD_APPEND', 'append');
 define('CMD_HELP', 'help');
 define('CMD_FILTER', 'filter');
+define('CMD_DATE', 'date'); // Outputs the date that is used for logging
 define('CMD_DATAFILE', 'datafile');
 
 prepareEnv();
@@ -26,6 +27,9 @@ function run($sInput) {
 			} else {
 				showLast();
 			}
+			break;
+		case CMD_DATE:
+			writeOutput(getLoggingDate());
 			break;
 		case CMD_DATAFILE:
 			writeOutput(getFilename());
@@ -74,7 +78,7 @@ function getInput() {
 function addLog($sLog, $sCommand=null) {
 	// @TODO: implement CMD_AMEND
 	_processLog($sLog, $sCommand);
-	$sEntry = sprintf("%s\t%s", date('D, d M Y H:i:s T (e)'), $sLog);
+	$sEntry = sprintf("%s\t%s", getLoggingDate(), $sLog);
 	$filepath = getFilename();
 	$separator = ($sCommand == CMD_APPEND) ? ' ' : "\n";
 	$content = implode($separator, array(
@@ -83,9 +87,11 @@ function addLog($sLog, $sCommand=null) {
 	));
 	file_put_contents($filepath, $content);
 }
-
+function getLoggingDate() {
+	return date('D, d M Y H:i:s T (e)');
+}
 function showHelp() {
-	writeOutput('lx-log [--append|--help|--debug|--datafile] [any [combination [of [words [...]]]]]');
+	writeOutput('lx-log [--append|--help|--debug|--datafile|--date] [any [combination [of [words [...]]]]]');
 }
 
 function writeOutput($sText) {
