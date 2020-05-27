@@ -7,7 +7,8 @@ echo=false
 command=${1:-''}
 
 case "$command" in
-  "echo") echo=true
+  "echo") echo=true;;
+  '.') lx-log 'x-starts-at:' $(pwd)
 esac
 
 cmd=""
@@ -32,6 +33,9 @@ until false;
 				;;
 				"date")
 				lx-log --date;
+				;;
+			      'pwd')
+				lx-log $(pwd)
 				;;
 				"exit") echo "Done."; exit;;
 				"")
