@@ -1,20 +1,20 @@
+#!/usr/bin/env bash
+
 echo "Start logging. Press Ctrl+C to stop...";
 
 echo=false
 
-[ -n "$1" ] && command=$1
+command=${1:-''}
 
-if [ "$command" = "echo" ]
-  then
-  echo=true
-fi
+case "$command" in
+  "echo") echo=true
+esac
 
 cmd=""
 prev_cmd=""
 until false;
 	do 
-		if $echo
-		  then
+		if $echo; then
 		  echo -e "> \c"; read cmd;
 		else
 		  read -s cmd;
