@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+function main {
+  datafile=$HOME/.lox
+  echo "Start logging. Press Ctrl+C to stop...";
+  cmd=""
+  prev_cmd=""
+  until false; do
+    process_line
+  done
+}
+
+function process_line {
+  read -s cmd;
+  case "$cmd" in
+    "echo")
+	echo $prev_cmd;
+	echo "> echo";
+	;;
+    "list")
+	less +G $datafile;
+	;;
+    "clear")
+	clear;
+	;;
+    "date")
+        date
+	;;
+    'pwd')
+	write_log $(pwd)
+	;;
+    "exit") 
+        echo "Done."
+	exit
+	;;
+    "")
+	echo "[Null]";
+	;;
+    *)
+        prev_cmd="$cmd"
+        write_log "${cmd}"
+        len=${#cmd}
+	echo "[Logged "${#cmd}" character(s).]"
+	;;
+  esac
+}
+
+function write_log {
+  local text=$1
+  echo $(date '+%Y-%m-%d %H:%M:%S') $text >> $datafile
+  return
+}
+
+main
+
