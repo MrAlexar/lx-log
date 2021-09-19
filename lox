@@ -10,8 +10,7 @@ __puton__() {
 start__help='Starts logging.'
 start__ () {
   echo "Start logging. Press Ctrl+C to stop...";
-  cmd=""
-  prev_cmd=""
+  local cmd prev_cmd
   until false; do
     __process_line
   done
