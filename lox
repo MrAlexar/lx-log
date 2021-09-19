@@ -16,6 +16,11 @@ start__ () {
   done
 }
 
+show__help='Displays the log'
+show__ () {
+  less $datafile__
+}
+
 __process_line () {
   read -s cmd;
   case "$cmd" in
