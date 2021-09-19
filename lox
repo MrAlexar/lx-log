@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 
-function main {
-  datafile=$HOME/.lox
+
+datafile__=${datafile__:-$HOME/.lox}
+
+__puton__() {
+  touch $datafile__
+}
+
+start__help='Starts logging.'
+start__ () {
   echo "Start logging. Press Ctrl+C to stop...";
   cmd=""
   prev_cmd=""
   until false; do
-    process_line
+    __process_line
   done
 }
 
-function process_line {
+__process_line () {
   read -s cmd;
   case "$cmd" in
     "echo")
@@ -27,7 +34,7 @@ function process_line {
         date
 	;;
     'pwd')
-	write_log $(pwd)
+	__write_log $(pwd)
 	;;
     "exit") 
         echo "Done."
@@ -38,18 +45,18 @@ function process_line {
 	;;
     *)
         prev_cmd="$cmd"
-        write_log "${cmd}"
+        __write_log "${cmd}"
         len=${#cmd}
 	echo "[Logged "${#cmd}" character(s).]"
 	;;
   esac
 }
 
-function write_log {
+__write_log () {
   local text=$1
-  echo $(date '+%Y-%m-%d %H:%M:%S') $text >> $datafile
+  echo $(date '+%Y-%m-%d %H:%M:%S') $text >> $datafile__
   return
 }
 
-main
+. undies
 
