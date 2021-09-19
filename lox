@@ -29,7 +29,7 @@ __process_line () {
 	echo "> echo";
 	;;
     "list")
-	less +G $datafile;
+	less +G $datafile__;
 	;;
     "clear")
 	clear;
