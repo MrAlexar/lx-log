@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+LOX_VISIBLE=${LOX_VISIBLE:-''}
 
 datafile__=${datafile__:-$HOME/.lox}
 
@@ -22,7 +23,11 @@ show__ () {
 }
 
 __process_line () {
-  read -s cmd;
+  if test -z $LOX_VISIBLE; then
+    read -s cmd
+  else
+    read cmd
+  fi
   case "$cmd" in
     "echo")
 	echo $prev_cmd;
