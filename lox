@@ -22,43 +22,63 @@ show__ () {
   less $datafile__
 }
 
-__process_line () {
-  if test -z $LOX_VISIBLE; then
-    read -s cmd
-  else
-    read cmd
-  fi
+cmd__help='Executes a lox command; for internal and external use.'
+cmd__ () {
+  local cmd=$@
+  local -A list
+  __list list
   case "$cmd" in
-    "echo")
+    ${list[echo]})
 	echo $prev_cmd;
 	echo "> echo";
 	;;
-    "list")
+    ${list[list]})
 	less +G $datafile__;
 	;;
-    "clear")
+    ${list[clear]})
 	clear;
 	;;
-    "date")
+    ${list[date]})
         date
 	;;
-    'pwd')
+    ${list[pwd]})
 	__write_log $(pwd)
 	;;
-    "exit") 
+    ${list[exit]})
         echo "Done."
 	exit
 	;;
     "")
 	echo "[Null]";
 	;;
-    *)
+    ${list[default]})
         prev_cmd="$cmd"
         __write_log "${cmd}"
         len=${#cmd}
 	echo "[Logged "${#cmd}" character(s).]"
 	;;
   esac
+}
+
+__list () {
+  local -n arr=$1
+  shopt -s extglob
+  arr[echo]='@(echo)'
+  arr[exit]='@(x|q)'
+  arr[list]='@(list)'
+  arr[clear]='@(clear)'
+  arr[date]='@(date)'
+  arr[pwd]='@(pwd)'
+  arr[default]='@(*)'
+}
+
+__process_line () {
+  if test -z $LOX_VISIBLE; then
+    read -s cmd
+  else
+    read cmd
+  fi
+  cmd__ $cmd
 }
 
 __write_log () {
