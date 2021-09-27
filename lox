@@ -12,6 +12,7 @@ start__help='Starts logging.'
 start__ () {
   echo "Start logging. Press Ctrl+C to stop...";
   local cmd prev_cmd
+  cmd__ pwd
   until false; do
     __process_line
   done
