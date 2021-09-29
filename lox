@@ -24,9 +24,18 @@ start__ () {
   done
 }
 
-show__help='Displays the log'
+show__help='Displays the log. @see tail'
 show__ () {
   less $datafile__
+}
+
+tail__help='Usage: tail [N] ; display the last N line from the log. @see show'
+tail__ () {
+  if [ ! -z $1 ]; then
+    tail $datafile__ -n$1
+  else
+    tail $datafile__
+  fi
 }
 
 cmd__help='Executes a lox command; for internal and external use.'
