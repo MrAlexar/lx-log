@@ -8,6 +8,12 @@ __puton__() {
   touch $datafile__
 }
 
+here__help='Uses a local repository: PWD/.lox'
+here__() {
+  datafile__=$(pwd)/.lox
+  __run "$@"
+}
+
 start__help='Starts logging.'
 start__ () {
   echo "Start logging. Press Ctrl+C to stop...";
