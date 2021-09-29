@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+
+LOX_VISIBLE=${LOX_VISIBLE:-''}
+
+datafile__=${datafile__:-$HOME/.lox}
+
+__puton__() {
+  touch $datafile__
+}
+
+here__help='Uses a local repository: PWD/.lox'
+here__() {
+  datafile__=$(pwd)/.lox
+  __run "$@"
+}
+
+start__help='Starts logging.'
+start__ () {
+  echo "Start logging. Press Ctrl+C to stop...";
+  local cmd prev_cmd
+  cmd__ pwd
+  until false; do
+    __process_line
+  done
+}
+
+show__help='Displays the log'
+show__ () {
+  less $datafile__
+}
+
+cmd__help='Executes a lox command; for internal and external use.'
+cmd__ () {
+  local cmd=$@
+  local -A list
+  __list list
+  case "$cmd" in
+    ${list[echo]})
+	echo $prev_cmd;
+	echo "> echo";
+	;;
+    ${list[list]})
+	less +G $datafile__;
+	;;
+    ${list[clear]})
+	clear;
+	;;
+    ${list[date]})
+        date
+	;;
+    ${list[pwd]})
+	__write_log $(pwd)
+	;;
+    ${list[exit]})
+        echo "Done."
+	exit
+	;;
+    "")
+	echo "[Null]";
+	;;
+    ${list[default]})
+        prev_cmd="$cmd"
+        __write_log "${cmd}"
+        len=${#cmd}
+	echo "[Logged "${#cmd}" character(s).]"
+	;;
+  esac
+}
+
+__list () {
+  local -n arr=$1
+  shopt -s extglob
+  arr[echo]='@(echo)'
+  arr[exit]='@(x|q)'
+  arr[list]='@(list)'
+  arr[clear]='@(clear)'
+  arr[date]='@(date)'
+  arr[pwd]='@(pwd)'
+  arr[default]='@(*)'
+}
+
+__process_line () {
+  if test -z $LOX_VISIBLE; then
+    read -s cmd
+  else
+    read cmd
+  fi
+  cmd__ $cmd
+}
+
+__write_log () {
+  local text=$1
+  echo $(date '+%Y-%m-%d %H:%M:%S') $text >> $datafile__
+  return
+}
+
+. undies
+
