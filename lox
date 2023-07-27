@@ -2,15 +2,26 @@
 
 LOX_VISIBLE=${LOX_VISIBLE:-''}
 
-datafile__=${datafile__:-$HOME/.lox}
+__datafile=${__datafile:-$HOME/.lox}
 
 __puton__() {
-  touch $datafile__
+  if [ -d $__datafile ]; then
+    echo 'datafile cannot be a directory: '$__datafile
+    return
+  fi
+  touch $__datafile
+}
+
+for__help='@arg logfile @does use the given file as lox file.'
+for__ () {
+  __datafile=$1
+  shift
+  __run "$@"
 }
 
 here__help='Uses a local repository: PWD/.lox'
 here__() {
-  datafile__=$(pwd)/.lox
+  __datafile=$(pwd)/.lox
   __run "$@"
 }
 
@@ -26,15 +37,15 @@ start__ () {
 
 show__help='Displays the log. @see tail'
 show__ () {
-  less $datafile__
+  less $__datafile
 }
 
 tail__help='Usage: tail [N] ; display the last N line from the log. @see show'
 tail__ () {
   if [ ! -z $1 ]; then
-    tail $datafile__ -n$1
+    tail $__datafile -n$1
   else
-    tail $datafile__
+    tail $__datafile
   fi
 }
 
@@ -49,7 +60,7 @@ cmd__ () {
 	echo "> echo";
 	;;
     ${list[list]})
-	less +G $datafile__;
+	less +G $__datafile;
 	;;
     ${list[clear]})
 	clear;
@@ -99,7 +110,7 @@ __process_line () {
 
 __write_log () {
   local text=$1
-  echo $(date '+%Y-%m-%d %H:%M:%S') $text >> $datafile__
+  echo $(date '+%Y-%m-%d %H:%M:%S') $text >> $__datafile
   return
 }
 
